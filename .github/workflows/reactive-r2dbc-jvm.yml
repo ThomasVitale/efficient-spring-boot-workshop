@@ -30,6 +30,8 @@ jobs:
           cache: gradle
       - name: Get project version
         uses: thecodemonkey/action-get-gradle-version@master
+        with:
+          file: reactive-r2dbc-jvm/build.gradle
         id: version
       - name: Save app version as environment variable
         run: |

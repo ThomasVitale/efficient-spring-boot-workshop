@@ -1,5 +1,4 @@
-DROP TABLE IF EXISTS book;
-CREATE TABLE book (
-  id                  BIGSERIAL PRIMARY KEY NOT NULL,
-  title               varchar(255) NOT NULL
+CREATE TABLE IF NOT EXISTS book (
+    id          BIGSERIAL PRIMARY KEY NOT NULL,
+    title       varchar(255) NOT NULL
 );
