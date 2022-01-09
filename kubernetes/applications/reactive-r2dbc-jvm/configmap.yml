@@ -9,3 +9,6 @@ data:
     spring:
       lifecycle:
         timeout-per-shutdown-phase: 15s
+      zipkin:
+        base-url: http://tempo.observability-stack.svc.cluster.local:9411
+        enabled: true
