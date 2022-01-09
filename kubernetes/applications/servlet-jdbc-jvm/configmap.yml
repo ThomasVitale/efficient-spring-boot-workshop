@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: servlet-jdbc-jvm
+data:
+  application.yml: |
+    server:
+      shutdown: graceful
+    spring:
+      lifecycle:
+        timeout-per-shutdown-phase: 15s

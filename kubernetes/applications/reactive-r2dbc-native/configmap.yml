@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: reactive-r2dbc-native
+data:
+  application.yml: |
+    server:
+      shutdown: graceful
+    spring:
+      lifecycle:
+        timeout-per-shutdown-phase: 15s

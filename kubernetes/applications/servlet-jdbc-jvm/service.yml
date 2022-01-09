@@ -1,0 +1,41 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: servlet-jdbc-jvm
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/path: "/actuator/prometheus"
+    prometheus.io/port: "9001"
+spec:
+  template:
+    spec:
+      containers:
+        - name: servlet-jdbc-jvm
+          image: ghcr.io/thomasvitale/servlet-jdbc-jvm:0.0.1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9001
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "0.5"
+            limits:
+              memory: "1Gi"
+              cpu: "2"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+            initialDelaySeconds: 5
+            periodSeconds: 15
+          volumeMounts:
+            - name: config-volume
+              mountPath: /workspace/config
+      volumes:
+        - name: config-volume
+          configMap:
+            name: servlet-jdbc-jvm

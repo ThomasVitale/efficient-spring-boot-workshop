@@ -1,0 +1,27 @@
+apiVersion: operator.knative.dev/v1alpha1
+kind: KnativeServing
+metadata:
+  name: knative-serving
+  namespace: knative-serving
+spec:
+  ingress:
+    kourier:
+      enabled: true
+  config:
+    certmanager:
+      issuerRef: |
+        kind: ClusterIssuer
+        name: letsencrypt-http01-issuer
+    domain:
+      polarbookshop.com: ""
+    gc:
+      max-non-active-revisions: "1"
+      min-non-active-revisions: "1"
+      retain-since-create-time: "disabled"
+      retain-since-last-active-time: "disabled"
+    network:
+      autocreate-cluster-domain-claims: "true"
+      autoTLS: Enabled
+      ingress-class: "kourier.ingress.networking.knative.dev"
+  additionalManifests:
+    - URL: https://github.com/knative/net-certmanager/releases/download/knative-v1.1.0/release.yaml

@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-datasource
+  namespace: observability-stack
+  labels:
+    grafana_datasource: "true"
+data:
+  prometheus-datasource.yaml: |-
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        uid: prometheus-thomas-vitale
+        access: proxy
+        orgId: 1
+        url: http://loki-stack-prometheus-server
+        version: 1
+        editable: true

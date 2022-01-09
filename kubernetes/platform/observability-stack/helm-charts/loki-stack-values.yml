@@ -1,0 +1,43 @@
+loki:
+  enabled: true
+  image:
+    tag: 2.4.1
+
+promtail:
+  enabled: false
+
+fluent-bit:
+  enabled: true
+  image:
+    tag: 2.4.1-amd64
+
+grafana:
+  enabled: true
+  image:
+    tag: 8.3.3
+  sidecar:
+    dashboards:
+      enabled: true
+    datasources:
+      enabled: true
+
+prometheus:
+  enabled: true
+  alertmanager:
+    enabled: false
+  configmapReload:
+    alertmanager:
+      enabled: false
+  kubeStateMetrics:
+    metricLabelsAllowlist:
+      - pods=[*]
+      - deployments=[app.kubernetes.io/name,app.kubernetes.io/component,app.kubernetes.io/instance]
+  pushgateway:
+    enabled: false
+  server:
+    global:
+      scrape_interval: 15s
+    image:
+      tag: v2.32.1
+    persistentVolume:
+      enabled: false

@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tempo-datasource
+  namespace: observability-stack
+  labels:
+    grafana_datasource: "true"
+data:
+  tempo-datasource.yaml: |-
+    apiVersion: 1
+    datasources:
+      - name: Tempo
+        type: tempo
+        uid: tempo-thomas-vitale
+        access: proxy
+        orgId: 1
+        url: http://tempo:3100
+        version: 1
+        editable: true

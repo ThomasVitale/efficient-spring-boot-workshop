@@ -1,1 +1,1 @@
-# efficient-spring-boot-workshop
+# Efficient Spring Boot Workshop

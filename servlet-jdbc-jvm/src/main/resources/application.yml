@@ -1,0 +1,38 @@
+server:
+  port: 9001
+  tomcat:
+    connection-timeout: 2s
+    threads:
+      max: 200
+      min-spare: 10
+
+spring:
+  application:
+    name: servlet-jdbc-jvm
+  datasource:
+    username: user
+    password: password
+    url: jdbc:postgresql://localhost:5432/catalog
+    hikari:
+      connection-timeout: 2000 #ms
+      maximum-pool-size: 20
+  sql:
+    init:
+      mode: always
+  sleuth:
+    sampler:
+      probability: 1.0
+  zipkin:
+    base-url: http://localhost:9411
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: env, health, heapdump, prometheus
+  endpoint:
+    health:
+      show-components: always
+      show-details: always
+      probes:
+        enabled: true
