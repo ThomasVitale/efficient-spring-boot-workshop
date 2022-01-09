@@ -5,7 +5,7 @@ metadata:
   annotations:
     prometheus.io/scrape: "true"
     prometheus.io/path: "/actuator/prometheus"
-    prometheus.io/port: "9003"
+    prometheus.io/port: "9102"
 spec:
   template:
     spec:
@@ -14,7 +14,7 @@ spec:
           image: ghcr.io/thomasvitale/reactive-r2dbc-native:0.0.1
           imagePullPolicy: Always
           ports:
-            - containerPort: 9003
+            - containerPort: 9102
           resources:
             requests:
               memory: "1Gi"

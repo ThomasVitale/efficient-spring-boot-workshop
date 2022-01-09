@@ -49,6 +49,18 @@ test {
 }
 
 bootBuildImage {
+    imageName = "${project.name}:${project.version}"
     builder = 'paketobuildpacks/builder:tiny'
-    environment = ['BP_NATIVE_IMAGE': 'true']
+    environment = [
+            'BP_JVM_VERSION': '17.*',
+            'BP_NATIVE_IMAGE': 'true'
+    ]
+
+    docker {
+        publishRegistry {
+            username = project.findProperty("registryUsername")
+            password = project.findProperty("registryToken")
+            url = project.findProperty("registryUrl")
+        }
+    }
 }

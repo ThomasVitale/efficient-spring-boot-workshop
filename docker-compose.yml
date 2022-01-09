@@ -12,13 +12,52 @@ services:
       - 9001:9001
       - 8001:8001
     environment:
-      # Buildpacks environment variable to configure the number of threads in memory calculation
       - BPL_JVM_THREAD_COUNT=50
-      # Buildpacks environment variable to enable debug through a socket on port 8001
       - BPL_DEBUG_ENABLED=true
       - BPL_DEBUG_PORT=8001
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/catalog
       - SPRING_ZIPKIN_BASE_URL=http://tempo:9411
+      - SPRING_ZIPKIN_ENABLED=true
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: 127.0.0.1:24224
+
+  reactive-r2dbc-jvm:
+    depends_on:
+      - postgresql
+    image: "reactive-r2dbc-jvm:0.0.1"
+    container_name: "reactive-r2dbc-jvm"
+    ports:
+      - 9002:9002
+      - 8002:8002
+    environment:
+      - BPL_JVM_THREAD_COUNT=50
+      - BPL_DEBUG_ENABLED=true
+      - BPL_DEBUG_PORT=8002
+      - SPRING_DATASOURCE_URL=r2dbc:postgresql://postgresql:5432/catalog
+      - SPRING_ZIPKIN_BASE_URL=http://tempo:9411
+      - SPRING_ZIPKIN_ENABLED=true
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: 127.0.0.1:24224
+
+  reactive-r2dbc-native:
+    depends_on:
+      - postgresql
+    image: "reactive-r2dbc-native:0.0.1"
+    container_name: "reactive-r2dbc-native"
+    ports:
+      - 9102:9102
+      - 8102:8102
+    environment:
+      - BPL_JVM_THREAD_COUNT=50
+      - BPL_DEBUG_ENABLED=true
+      - BPL_DEBUG_PORT=8102
+      - SPRING_DATASOURCE_URL=r2dbc:postgresql://postgresql:5432/catalog
+      - SPRING_ZIPKIN_BASE_URL=http://tempo:9411
+      - SPRING_ZIPKIN_ENABLED=true
     logging:
       driver: fluentd
       options:
@@ -51,8 +90,8 @@ services:
       GF_SECURITY_ADMIN_USER: user
       GF_SECURITY_ADMIN_PASSWORD: password
     volumes:
-      - ./platform/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
-      - ./platform/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./docker/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
+      - ./docker/grafana/dashboards:/etc/grafana/provisioning/dashboards
 
   prometheus:
     image: prom/prometheus:v2.32.1
@@ -78,14 +117,14 @@ services:
     environment:
       - LOKI_URL=http://loki:3100/loki/api/v1/push
     volumes:
-      - ./platform/fluent-bit/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
+      - ./docker/fluent-bit/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
 
   tempo:
     image: grafana/tempo:1.2.1
     container_name: tempo
     command: -config.file /etc/tempo-config.yml
     volumes:
-      - ./platform/tempo/tempo.yml:/etc/tempo-config.yml
+      - ./docker/tempo/tempo.yml:/etc/tempo-config.yml
     ports:
       - "3101:3100"     # Tempo
       - "9411:9411"     # Zipkin
