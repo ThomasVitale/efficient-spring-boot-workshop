@@ -13,7 +13,7 @@ spec:
         kind: ClusterIssuer
         name: letsencrypt-http01-issuer
     domain:
-      polarbookshop.com: ""
+      thomasvitale.dev: ""
     gc:
       max-non-active-revisions: "1"
       min-non-active-revisions: "1"

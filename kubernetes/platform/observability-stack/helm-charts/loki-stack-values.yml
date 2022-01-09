@@ -15,6 +15,9 @@ grafana:
   enabled: true
   image:
     tag: 8.3.3
+  adminUser: heimdall
+  service:
+    type: LoadBalancer
   sidecar:
     dashboards:
       enabled: true
