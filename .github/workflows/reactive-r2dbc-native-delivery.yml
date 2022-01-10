@@ -1,0 +1,32 @@
+name: Reactive R2DBC Native
+on: [push]
+
+jobs:
+  package:
+    name: Package
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v2
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+      - name: Get project version
+        uses: thecodemonkey/action-get-gradle-version@master
+        with:
+          file: reactive-r2dbc-native/build.gradle
+        id: version
+      - name: Save app version as environment variable
+        run: |
+          echo "APP_VERSION=${{ steps.version.outputs.version }}" >> $GITHUB_ENV
+      - name: Containerize and publish image
+        run: |
+          cd reactive-r2dbc-native
+          chmod +x gradlew
+          ./gradlew bootBuildImage \
+            --imageName ghcr.io/thomasvitale/reactive-r2dbc-native:${{ env.APP_VERSION }} \
+            --publishImage \
+            -PregistryUrl=ghcr.io \
+            -PregistryUsername=thomasvitale \
+            -PregistryToken=${{ secrets.GITHUB_TOKEN }}

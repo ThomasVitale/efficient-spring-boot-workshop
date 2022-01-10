@@ -17,3 +17,6 @@ data:
         url: http://tempo:3100
         version: 1
         editable: true
+        jsonData:
+          tracesToLogs:
+            datasourceUid: loki-thomas-vitale

@@ -15,6 +15,9 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 9002
+          env:
+            - name: BPL_JAVA_NMT_ENABLED
+              value: "false"
           resources:
             requests:
               memory: "1Gi"
