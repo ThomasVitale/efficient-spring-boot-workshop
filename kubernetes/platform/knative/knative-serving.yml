@@ -15,7 +15,7 @@ spec:
     domain:
       thomasvitale.dev: ""
     gc:
-      max-non-active-revisions: "1"
+      max-non-active-revisions: "3"
       min-non-active-revisions: "1"
       retain-since-create-time: "disabled"
       retain-since-last-active-time: "disabled"
