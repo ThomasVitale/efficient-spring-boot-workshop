@@ -8,6 +8,9 @@ spec:
     kourier:
       enabled: true
   config:
+    autoscaler:
+      enable-scale-to-zero: "false"
+      scale-to-zero-grace-period: "300s"
     certmanager:
       issuerRef: |
         kind: ClusterIssuer

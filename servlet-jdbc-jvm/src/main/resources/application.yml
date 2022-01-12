@@ -37,3 +37,6 @@ management:
       show-details: always
       probes:
         enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}

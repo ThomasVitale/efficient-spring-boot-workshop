@@ -6,7 +6,7 @@ services:
   servlet-jdbc-jvm:
     depends_on:
       - postgresql
-    image: "servlet-jdbc-jvm:0.0.1"
+    image: "ghcr.io/servlet-jdbc-jvm:0.0.1"
     container_name: "servlet-jdbc-jvm"
     ports:
       - 9001:9001
@@ -26,7 +26,7 @@ services:
   reactive-r2dbc-jvm:
     depends_on:
       - postgresql
-    image: "reactive-r2dbc-jvm:0.0.1"
+    image: "ghcr.io/reactive-r2dbc-jvm:0.0.1"
     container_name: "reactive-r2dbc-jvm"
     ports:
       - 9002:9002
@@ -46,7 +46,7 @@ services:
   reactive-r2dbc-native:
     depends_on:
       - postgresql
-    image: "reactive-r2dbc-native:0.0.1"
+    image: "ghcr.io/reactive-r2dbc-native:0.0.1"
     container_name: "reactive-r2dbc-native"
     ports:
       - 9102:9102
