@@ -2,12 +2,14 @@ apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
   name: reactive-r2dbc-jvm
-  annotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/path: "/actuator/prometheus"
-    prometheus.io/port: "9002"
 spec:
   template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/target: "25"
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/actuator/prometheus"
+        prometheus.io/port: "9102"
     spec:
       containers:
         - name: reactive-r2dbc-jvm
@@ -33,7 +35,7 @@ spec:
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
-            initialDelaySeconds: 5
+            initialDelaySeconds: 10
             periodSeconds: 15
           volumeMounts:
             - name: config-volume

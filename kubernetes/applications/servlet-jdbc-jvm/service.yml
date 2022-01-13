@@ -2,12 +2,13 @@ apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
   name: servlet-jdbc-jvm
-  annotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/path: "/actuator/prometheus"
-    prometheus.io/port: "9001"
 spec:
   template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/actuator/prometheus"
+        prometheus.io/port: "9001"
     spec:
       containers:
         - name: servlet-jdbc-jvm
@@ -28,12 +29,12 @@ spec:
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
-            initialDelaySeconds: 15
+            initialDelaySeconds: 10
             periodSeconds: 5
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
-            initialDelaySeconds: 5
+            initialDelaySeconds: 10
             periodSeconds: 15
           volumeMounts:
             - name: config-volume

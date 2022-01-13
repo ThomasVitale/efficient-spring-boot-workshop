@@ -10,7 +10,6 @@ spec:
   config:
     autoscaler:
       enable-scale-to-zero: "false"
-      scale-to-zero-grace-period: "300s"
     certmanager:
       issuerRef: |
         kind: ClusterIssuer
@@ -18,7 +17,7 @@ spec:
     domain:
       thomasvitale.dev: ""
     gc:
-      max-non-active-revisions: "3"
+      max-non-active-revisions: "1"
       min-non-active-revisions: "1"
       retain-since-create-time: "disabled"
       retain-since-last-active-time: "disabled"
@@ -27,4 +26,4 @@ spec:
       autoTLS: Enabled
       ingress-class: "kourier.ingress.networking.knative.dev"
   additionalManifests:
-    - URL: https://github.com/knative/net-certmanager/releases/download/knative-v1.1.0/release.yaml
+    - URL: https://github.com/knative/net-certmanager/releases/download/knative-v1.0.0/release.yaml
