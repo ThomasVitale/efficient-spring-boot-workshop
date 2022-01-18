@@ -1,0 +1,93 @@
+loki:
+  enabled: true
+  image:
+    tag: 2.4.2
+  config:
+    ingester:
+      wal:
+        dir: /data/loki/wal
+
+promtail:
+  enabled: false
+  image:
+    tag: 2.4.2
+
+fluent-bit:
+  enabled: true
+  image:
+    tag: 2.4.2-amd64
+
+grafana:
+  enabled: true
+  image:
+    tag: 8.3.4
+  adminUser: heimdall
+  service:
+    type: ClusterIP
+  sidecar:
+    dashboards:
+      enabled: true
+      provider:
+        allowUiUpdates: true
+    datasources:
+      enabled: false
+  datasources:
+    "datasources.yaml":
+      apiVersion: 1
+      datasources:
+        - name: Prometheus
+          type: prometheus
+          uid: prometheus-thomas-vitale
+          access: proxy
+          orgId: 1
+          url: http://loki-stack-prometheus-server
+          version: 1
+          editable: true
+        - name: Tempo
+          type: tempo
+          uid: tempo-thomas-vitale
+          access: proxy
+          orgId: 1
+          url: http://tempo:3100
+          version: 1
+          editable: true
+          jsonData:
+            tracesToLogs:
+              datasourceUid: loki-thomas-vitale
+        - name: Loki
+          type: loki
+          uid: loki-thomas-vitale
+          access: proxy
+          orgId: 1
+          url: http://loki-stack:3100
+          isDefault: true
+          version: 1
+          editable: true
+          readOnly: false
+          jsonData:
+            derivedFields:
+              - datasourceUid: tempo-thomas-vitale
+                matcherRegex: '\S+ \w+ \w+ \d+\-\d+\-\d+ \d+\:\d+\:\d+\.\d+\s+\w+\s+\[[\w-]+\,(\w+)\,\w+\]'
+                name: TraceID
+                url: '$${__value.raw}'
+
+prometheus:
+  enabled: true
+  alertmanager:
+    enabled: false
+  configmapReload:
+    alertmanager:
+      enabled: false
+  kubeStateMetrics:
+    metricLabelsAllowlist:
+      - pods=[*]
+      - deployments=[app.kubernetes.io/name,app.kubernetes.io/component,app.kubernetes.io/instance]
+  pushgateway:
+    enabled: false
+  server:
+    global:
+      scrape_interval: 15s
+    image:
+      tag: v2.32.1
+    persistentVolume:
+      enabled: false

@@ -19,8 +19,8 @@ data:
         version: 1
         editable: true
         jsonData:
-        derivedFields:
-          - datasourceUid: tempo-thomas-vitale
-            matcherRegex: \S+ \w+ \w+ \d+\-\d+\-\d+ \d+\:\d+\:\d+\.\d+\s+\w+\s+\[[\w-]+\,(\w+)\,\w+\]
-            name: TraceID
-            url: $${__value.raw}
+          derivedFields:
+            - datasourceUid: tempo-thomas-vitale
+              matcherRegex: '\S+ \w+ \w+ \d+\-\d+\-\d+ \d+\:\d+\:\d+\.\d+\s+\w+\s+\[[\w-]+\,(\w+)\,\w+\]'
+              name: TraceID
+              url: '$${__value.raw}'

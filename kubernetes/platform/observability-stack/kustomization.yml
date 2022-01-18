@@ -3,7 +3,9 @@ kind: Kustomization
 
 resources:
   - namespace.yml
+  - datasources.yml
   - knative-serving-dashboards.yml
+  - ingress.yml
   - loki-datasource.yml
   - prometheus-datasource.yml
   - tempo-datasource.yml

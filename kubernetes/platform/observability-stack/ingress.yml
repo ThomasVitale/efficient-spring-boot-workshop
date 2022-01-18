@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: observability-ingress
+  namespace: observability-stack
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-http01-issuer
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - grafana.thomasvitale.dev
+      secretName: grafana-tls
+  rules:
+    - host: grafana.thomasvitale.dev
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: loki-stack-grafana
+                port:
+                  number: 80

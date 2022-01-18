@@ -67,11 +67,11 @@ $ doctl compute domain create <domain>
 
 ## Installing Cert Manager
 
-Open a Terminal window, navigate to `platform/cert-manager`, and run the following to install Cert Manager and
+Open a Terminal window, navigate to `platform`, and run the following to install Cert Manager and
 configure a `ClusterIssuer` resource. Make sure you replace the email in the resource with your own first.
 
 ```shell
-$ kubectl apply -k .
+$ kubectl apply -k cert-manager
 ```
 
 ## Installing Knative
@@ -90,11 +90,11 @@ You can verify the Operator is deployed with this command.
 $ kubectl get deployment knative-operator
 ```
 
-Next, configure Knative by running the following command from `platform/knative`. First, make sure you add your
+Next, configure Knative by running the following command from `platform`. First, make sure you add your
 custom domain name in the `KnativeServing` resource.
 
 ```shell
-$ kubectl apply -k .
+$ kubectl apply -k knative
 ```
 
 Check the deployment is completed successfully.
@@ -107,4 +107,46 @@ Finally, you can find the public IP address exposed by the load balancer configu
 
 ```shell
 $ kubectl --namespace knative-serving get service kourier
+```
+
+## Installing Metrics Server
+
+Open a Terminal window, navigate to `platform`, and run the following to install Metrics Server.
+
+```shell
+$ kubectl apply -k metrics-server
+```
+
+## Installing the Grafana OSS observability stack
+
+As a prerequisite, install the Observability stack kustomization from the `platform` folder.
+
+```bash
+kubectl apply -k observability-stack
+```
+
+Install Grafana, Loki, Prometheus, and Fluent Bit:
+
+```bash
+helm upgrade --install loki-stack --namespace=observability-stack grafana/loki-stack \
+  --values observability-stack/helm/loki-stack-values.yml
+```
+
+Install Tempo:
+
+```bash
+helm upgrade --install tempo --namespace=observability-stack grafana/tempo \
+  --values observability-stack/helm/tempo-values.yml
+```
+
+Get the Grafana admin password:
+
+```bash
+kubectl get secret --namespace observability-stack loki-stack-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+```
+
+Expose Grafana to your local machine:
+
+```bash
+kubectl port-forward --namespace observability-stack service/loki-stack-grafana 3000:80
 ```
