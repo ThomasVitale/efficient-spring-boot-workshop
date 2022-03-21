@@ -1,0 +1,19 @@
+name: Acceptance Stage
+on:
+  registry_package:
+#    types: [published, updated]
+#concurrency: acceptance
+
+jobs:
+  system:
+    name: System Test
+    runs-on: ubuntu-20.04
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref }}
+      - name: Test
+        run: cat README.md
